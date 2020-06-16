@@ -10,6 +10,7 @@ public class StartWindow extends JFrame implements ActionListener {
     JButton exit;
 
     JPanel startPanel;
+    JPanel gamePanel;
     JPanel settingsPanel;
 
     public StartWindow() {
@@ -25,6 +26,7 @@ public class StartWindow extends JFrame implements ActionListener {
 
         settingsPanel = new SettingsWindow();
         startPanel = new JPanel();
+        gamePanel = new GameWindow();
 
         start.addActionListener(this);
         settings.addActionListener(this);
@@ -36,17 +38,23 @@ public class StartWindow extends JFrame implements ActionListener {
         startPanel.add(exit);
 
         add(startPanel);
-        startPanel.setBounds(0,0,500,500);
+        //startPanel.setBounds(0, 0, 500, 500);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == start) {
-
+            remove(startPanel);
+            add(gamePanel);
+            gamePanel.setBounds(0, 0, getWidth(), getHeight());
+            repaint();
+            revalidate();
         } else if (e.getSource() == settings) {
             remove(startPanel);
             add(settingsPanel);
-            settingsPanel.setBounds(0, 0, 500, 500);
+            settingsPanel.setBounds(0, 0, getWidth(), getHeight());
+            repaint();
+            revalidate();
         } else if (e.getSource() == exit) {
             dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
         }
