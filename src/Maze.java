@@ -1,3 +1,5 @@
+import org.jetbrains.annotations.NotNull;
+
 import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,7 +14,7 @@ public class Maze {
     private static final int DOT_WIDTH = 3;
 
     private Node[][] maze;
-    private List<Entity> ghosts = new ArrayList<>();
+    public List<Entity> ghosts = new ArrayList<>();
 
     public Maze() {
         try {
@@ -26,12 +28,12 @@ public class Maze {
     }
 
     public void paint(Graphics g) {
-        int blockHeight = Height / (maze.length);
-        int blockWidth = Width / (maze[0].length);
+        int blockHeight = Height / (maze[0].length);
+        int blockWidth = Width / (maze.length);
 
-        int y = 0;
+        int x = 0;
         for (Node[] nodes : maze) {
-            int x = 0;
+            int y = 0;
             for (Node node : nodes) {
                 switch (node) {
                     case WALL -> {
@@ -57,9 +59,9 @@ public class Maze {
                                 2 * DOT_WIDTH, 2 * DOT_HEIGHT);
                     }
                 }
-                x += blockWidth;
+                y += blockHeight;
             }
-            y += blockHeight;
+            x += blockWidth;
         }
 
         for (Entity e : ghosts) {
@@ -67,14 +69,14 @@ public class Maze {
         }
     }
 
-    public void LoadMaze(Scanner o) {
+    public void LoadMaze(@NotNull Scanner o) {
         int x = o.nextInt();
         int y = o.nextInt();
         maze = new Node[x][y];
 
         int k = 0;
-        for (int i = 0; i < x; ++i) {
-            for (int j = 0; j < y; ++j) {
+        for (int j = 0; j < y; ++j) {
+            for (int i = 0; i < x; ++i) {
                 int temp = o.nextInt();
 
                 if (temp == Node.BLANK.v) {
@@ -84,10 +86,10 @@ public class Maze {
                 } else if (temp == Node.WALL.v) {
                     maze[i][j] = Node.WALL;
                 } else if (temp == Node.PACMAN.v) {
-                    ghosts.add(new Player(j, i));
+                    ghosts.add(new Player(i, j));
                     maze[i][j] = Node.BLANK;
                 } else if (temp == Node.GHOST.v) {
-                    ghosts.add(new Ghost(j, i, k));
+                    ghosts.add(new Ghost(i, j, k));
                     k++;
                     maze[i][j] = Node.BLANK;
                 } else if (temp == Node.POWER_UP.v) {
