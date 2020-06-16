@@ -38,7 +38,6 @@ public class StartWindow extends JFrame implements ActionListener {
         startPanel.add(exit);
 
         add(startPanel);
-        //startPanel.setBounds(0, 0, 500, 500);
     }
 
     @Override
@@ -46,13 +45,11 @@ public class StartWindow extends JFrame implements ActionListener {
         if (e.getSource() == start) {
             remove(startPanel);
             add(gamePanel);
-            gamePanel.setBounds(0, 0, getWidth(), getHeight());
             repaint();
             revalidate();
         } else if (e.getSource() == settings) {
             remove(startPanel);
             add(settingsPanel);
-            settingsPanel.setBounds(0, 0, getWidth(), getHeight());
             repaint();
             revalidate();
         } else if (e.getSource() == exit) {

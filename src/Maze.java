@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Maze {
@@ -10,6 +12,7 @@ public class Maze {
     private static final int DOT_WIDTH = 3;
 
     private Node[][] maze;
+    private List<Entity> ghosts = new ArrayList<>();
 
     public Maze() {
         try {
@@ -30,33 +33,37 @@ public class Maze {
         for (Node[] nodes : maze) {
             int x = 0;
             for (Node node : nodes) {
-                if (node == Node.WALL) {
-                    g.setColor(Color.BLUE);
-                    g.fillRect(x, y, blockWidth, blockHeight);
-                } else if (node == Node.DOT) {
-                    g.setColor(Color.BLACK);
-                    g.fillRect(x, y, blockWidth, blockHeight);
-                    g.setColor(Color.YELLOW);
-                    g.fillRect(x + (blockWidth / 2), y + (blockHeight / 2),
-                            DOT_WIDTH, DOT_HEIGHT);
-                } else if (node == Node.PACMAN) {
-                    g.setColor(Color.BLACK);
-                    g.fillRect(x, y, blockWidth, blockHeight);
-                    g.setColor(Color.YELLOW);
-                    ///animate(g, pacMan, x, y);
-                } else if (node == Node.GHOST) {
-                    g.setColor(Color.BLACK);
-                    g.fillRect(x, y, blockWidth, blockHeight);
-                    g.setColor(Color.YELLOW);
-                    ///Player ghost = GetGhost(i,j);
-                    ///animate(g, ghost, x, y);
-                } else if (node == Node.BLANK) {
-                    g.setColor(Color.BLACK);
-                    g.fillRect(x, y, blockWidth, blockHeight);
+                switch (node) {
+                    case WALL -> {
+                        g.setColor(Color.BLUE);
+                        g.fillRect(x, y, blockWidth, blockHeight);
+                    }
+                    case DOT -> {
+                        g.setColor(Color.BLACK);
+                        g.fillRect(x, y, blockWidth, blockHeight);
+                        g.setColor(Color.YELLOW);
+                        g.fillRect(x + (blockWidth / 2) - (DOT_WIDTH / 2), y + (blockHeight / 2) - (DOT_HEIGHT / 2),
+                                DOT_WIDTH, DOT_HEIGHT);
+                    }
+                    case BLANK -> {
+                        g.setColor(Color.BLACK);
+                        g.fillRect(x, y, blockWidth, blockHeight);
+                    }
+                    case POWER_UP -> {
+                        g.setColor(Color.BLACK);
+                        g.fillRect(x, y, blockWidth, blockHeight);
+                        g.setColor(Color.YELLOW);
+                        g.fillRect(x + (blockWidth / 2) - DOT_WIDTH, y + (blockHeight / 2) - DOT_HEIGHT,
+                                2 * DOT_WIDTH, 2 * DOT_HEIGHT);
+                    }
                 }
                 x += blockWidth;
             }
             y += blockHeight;
+        }
+
+        for (Entity e : ghosts) {
+            e.paint(g, blockWidth, blockHeight);
         }
     }
 
@@ -65,6 +72,7 @@ public class Maze {
         int y = o.nextInt();
         maze = new Node[x][y];
 
+        int k = 0;
         for (int i = 0; i < x; ++i) {
             for (int j = 0; j < y; ++j) {
                 int temp = o.nextInt();
@@ -76,9 +84,12 @@ public class Maze {
                 } else if (temp == Node.WALL.v) {
                     maze[i][j] = Node.WALL;
                 } else if (temp == Node.PACMAN.v) {
-                    maze[i][j] = Node.PACMAN;
+                    ghosts.add(new Player(j, i));
+                    maze[i][j] = Node.BLANK;
                 } else if (temp == Node.GHOST.v) {
-                    maze[i][j] = Node.GHOST;
+                    ghosts.add(new Ghost(j, i, k));
+                    k++;
+                    maze[i][j] = Node.BLANK;
                 } else if (temp == Node.POWER_UP.v) {
                     maze[i][j] = Node.POWER_UP;
                 }
