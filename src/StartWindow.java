@@ -11,7 +11,7 @@ public class StartWindow extends JFrame implements ActionListener {
 
     JPanel startPanel;
     GameWindow gamePanel;
-    JPanel settingsPanel;
+    SettingsWindow settingsPanel;
     NamePanel namePanel;
 
     public StartWindow() {
@@ -68,7 +68,12 @@ public class StartWindow extends JFrame implements ActionListener {
             repaint();
             revalidate();
         } else if (e.getSource() == namePanel) {
-            dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+            remove(namePanel);
+            add(settingsPanel);
+            settingsPanel.load();
+            repaint();
+            revalidate();
+            //dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
         }
     }
 }
