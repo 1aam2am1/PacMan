@@ -68,10 +68,6 @@ public class GameWindow extends JPanel {
 
 
             repaint();
-
-            Thread.sleep(15);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         } finally {
             lock.unlock();
         }
