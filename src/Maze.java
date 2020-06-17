@@ -16,6 +16,12 @@ public class Maze {
     private Node[][] maze;
     public List<Entity> ghosts = new ArrayList<>();
 
+    private final int dotPoints = 10;
+    private final int powerUpPoints = 50;
+    private final int ghostPoints = 200;
+    public int points = 0;
+
+
     public Maze() {
         try {
             Scanner o = new Scanner(new File("map1.txt"));
@@ -115,7 +121,6 @@ public class Maze {
         }
 
         for (Entity e : ghosts) {
-            //e.update(maze);
             e.updatePosition(maze, 15);
         }
 
@@ -132,21 +137,47 @@ public class Maze {
         for (Entity e : ghosts) {
             if (e instanceof Ghost) {
                 if (PhysicsHelper.isOverlapping(e, p)) {
-                    return -1;
+                    Ghost g = (Ghost) e;
+                    if (g.display_image == g.scared) {
+                        ghosts.remove(e);
+                        points += ghostPoints;
+                        break;
+                    } else {
+                        return -1;
+                    }
                 }
             }
         }
 
-        if (maze[p.x][p.y] == Node.DOT) {
-            maze[p.x][p.y] = Node.BLANK;
-            ///TODO: Add Points
+        int nx = p.x;
+        int ny = p.y;
+        if (Math.abs(p.subX) >= 0.5 || Math.abs(p.subY) >= 0.5) {
+            nx += Math.signum(p.subX);
+            ny += Math.signum(p.subY);
         }
 
-        if (maze[p.x][p.y] == Node.POWER_UP) {
-            maze[p.x][p.y] = Node.BLANK;
-            ///TODO: Change to POWER UP mode
+        if (maze[nx][ny] == Node.DOT) {
+            maze[nx][ny] = Node.BLANK;
+            points += dotPoints;
+        }
+
+        if (maze[nx][ny] == Node.POWER_UP) {
+            maze[nx][ny] = Node.BLANK;
+            points += powerUpPoints;
+            makeScared();
         }
 
         return 0;
+    }
+
+
+    void makeScared() {
+        for (Entity e : ghosts) {
+            if (e instanceof Ghost) {
+                Ghost g = (Ghost) e;
+
+                g.scaredTime += g.scaredTimeMax;
+            }
+        }
     }
 }

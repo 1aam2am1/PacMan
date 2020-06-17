@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.util.Random;
 
 public class Ghost extends Entity {
-    private Image picture;
-    private Image scared;
+    public final int scaredTimeMax = 9000;
+    public Image picture;
 
     int px;
     int py;
+    public Image scared;
+    public int scaredTime = 0;
 
     public Ghost(int _x, int _y, int i) {
         super(_x, _y);
@@ -51,6 +53,24 @@ public class Ghost extends Entity {
             int choice = new Random().nextInt(capabilities.size());
 
             destiny = capabilities.get(choice);
+        }
+    }
+
+    @Override
+    public void updatePosition(Node[][] n, int milliseconds) {
+        super.updatePosition(n, milliseconds);
+
+        if (scaredTime > 0) {
+            scaredTime -= milliseconds;
+        }
+        if (scaredTime < 0) {
+            scaredTime = 0;
+        }
+
+        if (scaredTime > 0) {
+            display_image = scared;
+        } else {
+            display_image = picture;
         }
     }
 }
