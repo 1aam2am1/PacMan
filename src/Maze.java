@@ -98,4 +98,23 @@ public class Maze {
             }
         }
     }
+
+    public int update() {
+        boolean dots = false;
+        for (Node[] nodes : maze) {
+            for (Node node : nodes) {
+                if (node == Node.DOT) {
+                    dots = true;
+                    break;
+                }
+            }
+        }
+
+        if (!dots) {
+            return 1;
+        }
+
+
+        return 0;
+    }
 }

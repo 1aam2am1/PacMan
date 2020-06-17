@@ -9,6 +9,12 @@ public class Entity {
 
     protected Image display_image;
 
+    public Position destiny;
+
+    public void update(Node[][] n) {
+
+    }
+
     public Entity(int _x, int _y) {
         x = _x;
         y = _y;
@@ -24,4 +30,6 @@ public class Entity {
         if (display_image != null)
             g.drawImage(display_image, wx, wy, blockWidth, blockHeight, null);
     }
+
+    enum Position {LEFT, RIGHT, UP, DOWN}
 }

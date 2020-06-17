@@ -1,6 +1,7 @@
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
+import java.util.Random;
 
 public class Ghost extends Entity {
     private Image picture;
@@ -22,5 +23,18 @@ public class Ghost extends Entity {
         }
 
         display_image = picture;
+    }
+
+    @Override
+    public void update(Node[][] n) {
+        var capabilities = PhysicsHelper.canGo(n, x, y);
+
+        if (capabilities.size() != 1) {
+            capabilities.remove(PhysicsHelper.flip(destiny));
+        }
+
+        int choice = new Random().nextInt(capabilities.size());
+
+        destiny = capabilities.get(choice);
     }
 }
