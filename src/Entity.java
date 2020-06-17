@@ -13,7 +13,7 @@ public class Entity {
     protected Image display_image;
 
     public Position destiny = PhysicsHelper.randomEnum(Position.class);
-    private Position latest = destiny;
+    protected Position latest = destiny;
 
     public void update(Node[][] n) {
 
