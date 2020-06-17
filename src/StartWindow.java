@@ -12,7 +12,7 @@ public class StartWindow extends JFrame implements ActionListener {
     JPanel startPanel;
     GameWindow gamePanel;
     JPanel settingsPanel;
-    JPanel namePanel;
+    NamePanel namePanel;
 
     public StartWindow() {
         super("PackMan");
@@ -62,6 +62,8 @@ public class StartWindow extends JFrame implements ActionListener {
             //lost
             remove(gamePanel);
             add(namePanel);
+            namePanel.setScore(gamePanel.m.points);
+            namePanel.requestFocus();
             repaint();
             revalidate();
         }
