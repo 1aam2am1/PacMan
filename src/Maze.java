@@ -114,6 +114,11 @@ public class Maze {
             return 1;
         }
 
+        for (Entity e : ghosts) {
+            //e.update(maze);
+            e.updatePosition(maze, 15);
+        }
+
 
         return 0;
     }

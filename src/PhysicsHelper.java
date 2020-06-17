@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class PhysicsHelper {
     static public List<Entity.Position> canGo(Node[][] n, int x, int y) {
@@ -43,5 +44,10 @@ public class PhysicsHelper {
         }
 
         throw new RuntimeException("Switch should catch");
+    }
+
+    public static <T extends Enum<?>> T randomEnum(Class<T> clazz) {
+        int x = new Random().nextInt(clazz.getEnumConstants().length);
+        return clazz.getEnumConstants()[x];
     }
 }

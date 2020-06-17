@@ -13,11 +13,12 @@ public class GameWindow extends JPanel {
 
     public GameWindow() {
         setBackground(Color.BLACK);
+        setFocusable(true);
 
         m = new Maze();
 
         for (Entity e : m.ghosts) {
-            if (e.getClass().isAssignableFrom(Player.class))
+            if (e instanceof Player)
                 addKeyListener((Player) e);
         }
 
@@ -25,6 +26,8 @@ public class GameWindow extends JPanel {
     }
 
     public void start() {
+        requestFocus(true);
+
         if (!gameTimer.isRunning()) {
             gameTimer.start();
         }
