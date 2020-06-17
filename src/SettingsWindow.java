@@ -12,6 +12,15 @@ public class SettingsWindow extends JPanel {
         setPreferredSize(new Dimension(500, 500));
         add(scrollPane, BorderLayout.CENTER);
 
+        var clear = new JButton("Clear");
+        clear.addActionListener(l -> {
+            Score.getImplementation().li.clear();
+            Score.getImplementation().saveScore();
+            repaint();
+            revalidate();
+        });
+
+        add(clear);
 
         panel.setLayout(new GridBagLayout());
         load();
