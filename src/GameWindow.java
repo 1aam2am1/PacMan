@@ -41,9 +41,14 @@ public class GameWindow extends JPanel {
     public void paint(Graphics g) {
         super.paint(g);
 
-        m.Width = getWidth();
-        m.Height = getHeight();
-        m.paint(g);
+        lock.lock();
+        try {
+            m.Width = getWidth();
+            m.Height = getHeight();
+            m.paint(g);
+        } finally {
+            lock.unlock();
+        }
     }
 
     public void action() {
