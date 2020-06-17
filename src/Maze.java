@@ -119,6 +119,33 @@ public class Maze {
             e.updatePosition(maze, 15);
         }
 
+        Player p = null;
+        for (Entity e : ghosts) {
+            if (e instanceof Player)
+                p = (Player) e;
+        }
+
+        if (p == null) {
+            return -1;
+        }
+
+        for (Entity e : ghosts) {
+            if (e instanceof Ghost) {
+                if (PhysicsHelper.isOverlapping(e, p)) {
+                    return -1;
+                }
+            }
+        }
+
+        if (maze[p.x][p.y] == Node.DOT) {
+            maze[p.x][p.y] = Node.BLANK;
+            ///TODO: Add Points
+        }
+
+        if (maze[p.x][p.y] == Node.POWER_UP) {
+            maze[p.x][p.y] = Node.BLANK;
+            ///TODO: Change to POWER UP mode
+        }
 
         return 0;
     }
