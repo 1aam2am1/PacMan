@@ -23,13 +23,6 @@ public class Maze {
 
 
     public Maze() {
-        try {
-            Scanner o = new Scanner(new File("map1.txt"));
-
-            LoadMaze(o);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
 
     }
 

@@ -12,6 +12,7 @@ public class StartWindow extends JFrame implements ActionListener {
     JPanel startPanel;
     GameWindow gamePanel;
     JPanel settingsPanel;
+    JPanel namePanel;
 
     public StartWindow() {
         super("PackMan");
@@ -27,10 +28,12 @@ public class StartWindow extends JFrame implements ActionListener {
         settingsPanel = new SettingsWindow();
         startPanel = new JPanel();
         gamePanel = new GameWindow();
+        namePanel = new NamePanel();
 
         start.addActionListener(this);
         settings.addActionListener(this);
         exit.addActionListener(this);
+        gamePanel.addActionListener(this);
 
         startPanel.setLayout(new FlowLayout());
         startPanel.add(start);
@@ -55,6 +58,12 @@ public class StartWindow extends JFrame implements ActionListener {
             revalidate();
         } else if (e.getSource() == exit) {
             dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+        } else if (e.getSource() == gamePanel) {
+            //lost
+            remove(gamePanel);
+            add(namePanel);
+            repaint();
+            revalidate();
         }
     }
 }

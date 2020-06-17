@@ -1,7 +1,14 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.List;
 
 public class GameWindow extends JPanel {
     final Lock lock = new ReentrantLock();
@@ -11,18 +18,13 @@ public class GameWindow extends JPanel {
     Maze m;
     Timer gameTimer;
 
+    private final List<java.awt.event.ActionListener> actions = new ArrayList<>();
+
     public GameWindow() {
         setBackground(Color.BLACK);
         setFocusable(true);
 
-        m = new Maze();
-
-        for (Entity e : m.ghosts) {
-            if (e instanceof Player)
-                addKeyListener((Player) e);
-        }
-
-        gameTimer = new Timer(15, e -> action());
+        loadRandom();
     }
 
     public void start() {
@@ -51,6 +53,34 @@ public class GameWindow extends JPanel {
         }
     }
 
+    private void loadRandom() {
+        if (m != null) {
+            for (var k : getKeyListeners())
+                removeKeyListener(k);
+        }
+        m = new Maze();
+
+        try {
+            Scanner o = new Scanner(new File("map" +
+                    (new Random().nextInt(3) + 1) + ".txt"));
+
+            m.LoadMaze(o);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        for (Entity e : m.ghosts) {
+            if (e instanceof Player)
+                addKeyListener((Player) e);
+        }
+
+        if (gameTimer != null) {
+            gameTimer.stop();
+        }
+
+        gameTimer = new Timer(15, e -> action());
+    }
+
     public void action() {
         lock.lock();
         try {
@@ -60,9 +90,11 @@ public class GameWindow extends JPanel {
 
             if (result == 1) {
                 stop();
-                //win
+                loadRandom();
+                start();
             } else if (result == -1) {
                 stop();
+                EventQueue.invokeLater(this::makeAction);
                 //lose
             }
 
@@ -70,6 +102,16 @@ public class GameWindow extends JPanel {
             repaint();
         } finally {
             lock.unlock();
+        }
+    }
+
+    public void addActionListener(java.awt.event.ActionListener l) {
+        actions.add(l);
+    }
+
+    private void makeAction() {
+        for (var e : actions) {
+            e.actionPerformed(new ActionEvent(this, 0, ""));
         }
     }
 }
