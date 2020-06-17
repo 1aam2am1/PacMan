@@ -3,11 +3,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Scanner;
-import javax.json.*;
+import java.util.*;
 import java.util.List;
+import javax.json.*;
 
 public class Score {
     public final List<ScoreName> li = new ArrayList<>();
@@ -64,6 +62,8 @@ public class Score {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        li.sort((Comparator.comparingInt(e -> ((ScoreName) e).score)).reversed());
     }
 
     void saveScore() {
