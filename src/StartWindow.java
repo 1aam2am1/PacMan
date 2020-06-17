@@ -34,6 +34,7 @@ public class StartWindow extends JFrame implements ActionListener {
         settings.addActionListener(this);
         exit.addActionListener(this);
         gamePanel.addActionListener(this);
+        namePanel.addActionListener(this);
 
         startPanel.setLayout(new FlowLayout());
         startPanel.add(start);
@@ -66,6 +67,8 @@ public class StartWindow extends JFrame implements ActionListener {
             namePanel.requestFocus();
             repaint();
             revalidate();
+        } else if (e.getSource() == namePanel) {
+            dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
         }
     }
 }
