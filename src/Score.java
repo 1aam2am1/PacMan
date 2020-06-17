@@ -10,7 +10,7 @@ import javax.json.*;
 import java.util.List;
 
 public class Score {
-    private List<ScoreName> li = new ArrayList<>();
+    public final List<ScoreName> li = new ArrayList<>();
 
 
     private static Score s = null;
